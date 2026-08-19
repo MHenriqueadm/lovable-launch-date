@@ -13,7 +13,7 @@ BEGIN
   );
   RETURN NEW;
 END;
-$$ service_role;
+$$;
 
 -- 2. Trigger for new user signup
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
