@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardIndex,
