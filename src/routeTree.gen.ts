@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MasterRouteImport } from './routes/master'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as SlugAgendarRouteImport } from './routes/$slug.agendar'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
 
@@ -32,6 +34,11 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EsqueciSenhaRoute = EsqueciSenhaRouteImport.update({
+  id: '/esqueci-senha',
+  path: '/esqueci-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -40,6 +47,11 @@ const LoginRoute = LoginRouteImport.update({
 const MasterRoute = MasterRouteImport.update({
   id: '/master',
   path: '/master',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SlugAgendarRoute = SlugAgendarRouteImport.update({
@@ -57,16 +69,20 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/login': typeof LoginRoute
   '/master': typeof MasterRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/$slug/agendar': typeof SlugAgendarRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/login': typeof LoginRoute
   '/master': typeof MasterRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/$slug/agendar': typeof SlugAgendarRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -75,8 +91,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/cadastro': typeof CadastroRoute
   '/dashboard': typeof DashboardRouteWithChildren
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/login': typeof LoginRoute
   '/master': typeof MasterRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/$slug/agendar': typeof SlugAgendarRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -86,19 +104,31 @@ export interface FileRouteTypes {
     | '/'
     | '/cadastro'
     | '/dashboard'
+    | '/esqueci-senha'
     | '/login'
     | '/master'
+    | '/redefinir-senha'
     | '/$slug/agendar'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cadastro' | '/login' | '/master' | '/$slug/agendar' | '/dashboard'
+  to:
+    | '/'
+    | '/cadastro'
+    | '/esqueci-senha'
+    | '/login'
+    | '/master'
+    | '/redefinir-senha'
+    | '/$slug/agendar'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
     | '/cadastro'
     | '/dashboard'
+    | '/esqueci-senha'
     | '/login'
     | '/master'
+    | '/redefinir-senha'
     | '/$slug/agendar'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
@@ -107,8 +137,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CadastroRoute: typeof CadastroRoute
   DashboardRoute: typeof DashboardRouteWithChildren
+  EsqueciSenhaRoute: typeof EsqueciSenhaRoute
   LoginRoute: typeof LoginRoute
   MasterRoute: typeof MasterRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   SlugAgendarRoute: typeof SlugAgendarRoute
 }
 
@@ -135,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/esqueci-senha': {
+      id: '/esqueci-senha'
+      path: '/esqueci-senha'
+      fullPath: '/esqueci-senha'
+      preLoaderRoute: typeof EsqueciSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -147,6 +186,13 @@ declare module '@tanstack/react-router' {
       path: '/master'
       fullPath: '/master'
       preLoaderRoute: typeof MasterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$slug/agendar': {
@@ -182,8 +228,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CadastroRoute: CadastroRoute,
   DashboardRoute: DashboardRouteWithChildren,
+  EsqueciSenhaRoute: EsqueciSenhaRoute,
   LoginRoute: LoginRoute,
   MasterRoute: MasterRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
   SlugAgendarRoute: SlugAgendarRoute,
 }
 export const routeTree = rootRouteImport
