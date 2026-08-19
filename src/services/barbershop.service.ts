@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 export const barbershopService = {
   async getMyBarbershops(userId: string) {

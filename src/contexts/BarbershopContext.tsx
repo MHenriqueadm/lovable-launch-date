@@ -28,11 +28,15 @@ export function BarbershopProvider({ children }: { children: React.ReactNode }) 
         if (memberships && memberships.length > 0) {
           // By default, pick the first one. Multi-tenant switcher can be added later.
           const first = memberships[0];
-          setState({
-            barbershop: first.barbershops as unknown as Barbershop,
-            membership: first as unknown as BarbershopUser,
-            loading: false,
-          });
+          if (first) {
+            setState({
+              barbershop: first.barbershops as unknown as Barbershop,
+              membership: first as unknown as BarbershopUser,
+              loading: false,
+            });
+          } else {
+            setState({ barbershop: null, membership: null, loading: false });
+          }
         } else {
           setState({ barbershop: null, membership: null, loading: false });
         }
