@@ -1,12 +1,45 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, LoginData, authService } from "@/services/auth.service";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   component: Login,
 });
 
 function Login() {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginData>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginData) => {
+    setIsLoading(true);
+    try {
+      await authService.signIn(data);
+      toast.success("Login realizado com sucesso!");
+      navigate({ to: "/dashboard" });
+    } catch (error: any) {
+      toast.error(error.message || "Erro ao realizar login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#0a0a0a] text-white">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#0a0a0a] text-white font-manrope">
       {/* Left side */}
       <div className="hidden md:flex md:w-1/2 bg-black items-center justify-center p-12 border-r border-gray-900">
         <div className="max-w-md space-y-4">
@@ -28,21 +61,53 @@ function Login() {
             <p className="text-gray-400 text-sm">Acesse sua conta para continuar.</p>
           </div>
           
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-300">E-mail</label>
-              <input type="email" className="w-full px-3 py-2 bg-gray-900 border border-gray-800 rounded-md focus:ring-2 focus:ring-gray-700 outline-none" />
+              <Input 
+                type="email" 
+                placeholder="seu@email.com"
+                {...register("email")}
+                className={errors.email ? "border-red-500" : ""}
+              />
+              {errors.email && <span className="text-xs text-red-500">{errors.email.message}</span>}
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-300">Senha</label>
-              <input type="password" className="w-full px-3 py-2 bg-gray-900 border border-gray-800 rounded-md focus:ring-2 focus:ring-gray-700 outline-none" />
+              <div className="relative">
+                <Input 
+                  type={showPassword ? "text" : "password"} 
+                  placeholder="••••••"
+                  {...register("password")}
+                  className={errors.password ? "border-red-500 pr-10" : "pr-10"}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              {errors.password && <span className="text-xs text-red-500">{errors.password.message}</span>}
             </div>
-            <button className="w-full py-2 bg-white text-black font-medium rounded-md hover:bg-gray-200 transition-colors">Entrar</button>
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Entrando...
+                </>
+              ) : "Entrar"}
+            </Button>
           </form>
 
           <div className="flex justify-between text-xs text-gray-500">
-            <a href="#" className="hover:underline">Esqueci minha senha</a>
-            <a href="#" className="hover:underline">Ainda não possui uma conta? Cadastre-se</a>
+            <Link to="/esqueci-senha" title="Esqueci minha senha" className="hover:underline">Esqueci minha senha</Link>
+            <Link to="/cadastro" title="Cadastre-se" className="hover:underline">Ainda não possui uma conta? Cadastre-se</Link>
           </div>
         </div>
       </div>
